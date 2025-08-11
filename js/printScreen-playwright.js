@@ -1,4 +1,3 @@
-export default function printScreenPlaywright() {
   const { chromium } = require('playwright');
   const fs = require('fs');
   const path = require('path');
@@ -196,4 +195,3 @@ export default function printScreenPlaywright() {
   // Executar o script
   capturarPaginasPowerBI().catch(console.error);
   
-}

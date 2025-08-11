@@ -1,5 +1,4 @@
-export default async function gitPush() {
-  const { exec } = require('child_process');
+import { exec } from 'child_process';
   
   const commands = [
       'git add .',
@@ -21,5 +20,4 @@ export default async function gitPush() {
           break;
       }
   }
-}
 
