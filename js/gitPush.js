@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
   
   const commands = [
-      'git add .',
+      'git add -A',
       `git commit -m "Dados atualizados - ${new Date().toLocaleString()}"`,
       'git push'
   ];
