@@ -95,3 +95,62 @@ document.body.addEventListener('touchstart', () => {
 });
 
 loadImages();
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fullscreenBtn = document.getElementById("fullscreen-btn");
+
+  fullscreenBtn.addEventListener("click", function () {
+    // Se já estiver em fullscreen → sair
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    } 
+    // Se não estiver em fullscreen → entrar
+    else {
+      const elem = document.documentElement;
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      } else if (elem.webkitEnterFullscreen) { 
+        elem.webkitEnterFullscreen(); // TVs Samsung (vídeos)
+      }
+    }
+  });
+
+  // Mudar ícone dinamicamente
+  document.addEventListener("fullscreenchange", toggleButtonIcon);
+  document.addEventListener("webkitfullscreenchange", toggleButtonIcon);
+  document.addEventListener("mozfullscreenchange", toggleButtonIcon);
+  document.addEventListener("MSFullscreenChange", toggleButtonIcon);
+
+  function toggleButtonIcon() {
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      fullscreenBtn.textContent = "⤢"; // Ícone sair fullscreen
+    } else {
+      fullscreenBtn.textContent = "⛶"; // Ícone entrar fullscreen
+    }
+  }
+});

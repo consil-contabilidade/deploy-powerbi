@@ -58,3 +58,31 @@ body {
 .hidden {
   display: none;
 }
+
+#fullscreen-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#fullscreen-container:hover #fullscreen-btn {
+  display: block;
+}
+
+#fullscreen-btn {
+  background: rgba(0,0,0,0.3);
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+#fullscreen-btn:hover {
+  background: rgba(255,255,255,0.4);
+  opacity: 1;
+}
+
