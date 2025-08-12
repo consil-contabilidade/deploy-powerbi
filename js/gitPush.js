@@ -1,5 +1,6 @@
 import { exec } from 'child_process';
   
+export default async function gitPush() {
   const commands = [
       'git add -A',
       `git commit -m "Dados atualizados - ${new Date().toLocaleString()}"`,
@@ -20,4 +21,4 @@ import { exec } from 'child_process';
           break;
       }
   }
-
+}

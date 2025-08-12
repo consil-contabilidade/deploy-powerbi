@@ -1,6 +1,11 @@
-  const fs = require('fs');
-  const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default async function checkImageSize() {
   const folder = path.join(__dirname, '../screenshots_powerbi');
   const outputFile = path.join(__dirname, '../json/images.json');
   const minSize = 100 * 1024; // 100 KB
@@ -26,4 +31,4 @@
   } catch (err) {
     console.error('❌ Erro ao gerar lista de imagens:', err);
   }
-
+}

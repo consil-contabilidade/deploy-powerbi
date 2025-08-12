@@ -1,6 +1,6 @@
-  const { chromium } = require('playwright');
-  const fs = require('fs');
-  const path = require('path');
+  import { chromium } from 'playwright';
+  import fs from 'fs';
+  import path from 'path';
   
   async function removeTooltip(page) {
     await page.evaluate(() => {
@@ -56,13 +56,13 @@
     });
   }
   
-  async function capturarPaginasPowerBI() {
+  export default async function capturarPaginasPowerBI() {
     // URL do Power BI
     const url =
       'https://app.powerbi.com/view?r=eyJrIjoiZjdkZDRmOTQtNmUwMC00MmM5LWFjZmEtYjFiZjA0MjM0ZjJmIiwidCI6ImVkNjkzYWIxLTFhZGQtNDJhMy04NzY1LWJjMjkzYjU4ZmQyMiJ9';
   
     // Pasta para salvar os screenshots
-    const pastaDestino = './screenshots_powerbi';
+    const pastaDestino = '../screenshots_powerbi';
   
     // Criar pasta se não existir
     if (!fs.existsSync(pastaDestino)) {
@@ -193,5 +193,5 @@
   }
   
   // Executar o script
-  capturarPaginasPowerBI().catch(console.error);
+  // capturarPaginasPowerBI().catch(console.error);
   
