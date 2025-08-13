@@ -62,7 +62,7 @@
       'https://app.powerbi.com/view?r=eyJrIjoiZjdkZDRmOTQtNmUwMC00MmM5LWFjZmEtYjFiZjA0MjM0ZjJmIiwidCI6ImVkNjkzYWIxLTFhZGQtNDJhMy04NzY1LWJjMjkzYjU4ZmQyMiJ9';
   
     // Pasta para salvar os screenshots
-    const pastaDestino = '../screenshots_powerbi';
+    const pastaDestino = './screenshots_powerbi';
   
     // Criar pasta se não existir
     if (!fs.existsSync(pastaDestino)) {
@@ -109,7 +109,7 @@
           .toString()
           .padStart(2, '0')}.png`;
         const caminhoArquivo = path.join(pastaDestino, nomeArquivo);
-  
+          console.log(caminhoArquivo)
         await page.screenshot({
           path: caminhoArquivo,
           fullPage: false, // Screenshot apenas da área visível
