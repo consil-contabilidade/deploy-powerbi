@@ -64,6 +64,8 @@ body {
   top: 20px;
   right: 20px;
   padding: 24px;
+  width: 48px;
+  height: 48px;
 }
 
 #fullscreen-container:hover #fullscreen-btn {
