@@ -9,7 +9,7 @@ async function init() {
     await printScreenPlaywright();
     await delay(300);
     await checkImageSize();
-    await updateDateJSON();
+    // await updateDateJSON();
     await delay(500);
     await gitPush();
   } catch (error) {
