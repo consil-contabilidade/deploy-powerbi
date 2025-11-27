@@ -4,7 +4,6 @@ import delay from './js/delay.js';
 import gitPush from './js/gitPush.js';
 import updateDateJSON from './js/updateDateJSON.js'
 import gerarPastas from './organizaShots.js';
-import carregarFiltros from './server.js';
 
 async function init() {
   try {
@@ -14,7 +13,6 @@ async function init() {
     // await updateDateJSON();
     await gerarPastas();
     await delay(500);
-    await carregarFiltros();
     await delay(500);
     await gitPush();
   } catch (error) {

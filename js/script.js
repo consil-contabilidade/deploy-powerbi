@@ -1,175 +1,133 @@
-let images = [];
-let currentIndex = 0;
-let intervalTime = 60000; // 1 minuto
-let autoPlay = true;
-let interval;
-
-const slide = document.getElementById('slide');
-const controls = document.getElementById('controls');
-
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
-const pauseBtn = document.getElementById('pause');
-
-async function loadImages() {
-  try {
-    const response = await fetch('../json/images.json');
-    images = await response.json();
-    if (images.length > 0) {
-      showSlide(currentIndex);
-      startAutoPlay();
-    } else {
-      console.warn('Nenhuma imagem encontrada.');
-    }
-  } catch (err) {
-    console.error('Erro ao carregar imagens:', err);
-  }
-}
-
-function showSlide(index) {
-  slide.style.opacity = 0;
-  setTimeout(() => {
-    slide.src = images[index];
-    slide.onload = () => {
-      slide.style.opacity = 1;
-    };
-  }, 500);
-}
-
-function nextSlide() {
-  currentIndex = (currentIndex + 1) % images.length;
-  showSlide(currentIndex);
-}
-
-function prevSlide() {
-  currentIndex = (currentIndex - 1 + images.length) % images.length;
-  showSlide(currentIndex);
-}
-
-function startAutoPlay() {
-  interval = setInterval(nextSlide, intervalTime);
-}
-
-function stopAutoPlay() {
-  clearInterval(interval);
-}
-
-pauseBtn.addEventListener('click', () => {
-  autoPlay = !autoPlay;
-  if (autoPlay) {
-    pauseBtn.textContent = '⏸';
-    startAutoPlay();
-  } else {
-    pauseBtn.textContent = '▶';
-    stopAutoPlay();
-  }
-});
-
-nextBtn.addEventListener('click', () => {
-  nextSlide();
-  if (autoPlay) {
-    stopAutoPlay();
-    startAutoPlay();
-  }
-});
-
-prevBtn.addEventListener('click', () => {
-  prevSlide();
-  if (autoPlay) {
-    stopAutoPlay();
-    startAutoPlay();
-  }
-});
-
-document.body.addEventListener('mousemove', e => {
-  if (
-    window.innerHeight - e.clientY < 80 &&
-    window.innerWidth - e.clientX < 200
-  ) {
-    controls.classList.remove('hidden');
-  }
-});
-
-document.body.addEventListener('touchstart', () => {
-  controls.classList.toggle('hidden');
-});
-
-loadImages();
-
-document.addEventListener("DOMContentLoaded", function () {
-  const fullscreenBtn = document.getElementById("fullscreen-btn");
-
-  fullscreenBtn.addEventListener("click", function () {
-    // Se já estiver em fullscreen → sair
-    if (
-      document.fullscreenElement ||
-      document.webkitFullscreenElement ||
-      document.mozFullScreenElement ||
-      document.msFullscreenElement
-    ) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-    } 
-    // Se não estiver em fullscreen → entrar
-    else {
-      const elem = document.documentElement;
-
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      } else if (elem.webkitEnterFullscreen) { 
-        elem.webkitEnterFullscreen(); // TVs Samsung (vídeos)
-      }
-    }
-  });
-
-  // Mudar ícone dinamicamente
-  document.addEventListener("fullscreenchange", toggleButtonIcon);
-  document.addEventListener("webkitfullscreenchange", toggleButtonIcon);
-  document.addEventListener("mozfullscreenchange", toggleButtonIcon);
-  document.addEventListener("MSFullscreenChange", toggleButtonIcon);
-
-  function toggleButtonIcon() {
-    if (
-      document.fullscreenElement ||
-      document.webkitFullscreenElement ||
-      document.mozFullScreenElement ||
-      document.msFullscreenElement
-    ) {
-      fullscreenBtn.textContent = "⤢"; // Ícone sair fullscreen
-    } else {
-      fullscreenBtn.textContent = "⛶"; // Ícone entrar fullscreen
-    }
-  }
-});
-
 document.addEventListener('DOMContentLoaded', () => {
+
+  // =======================================================
+  // 1. DECLARAÇÃO DE VARIÁVEIS E ELEMENTOS DO DOM
+  // =======================================================
+
+  let images = [];
+  let currentIndex = 0;
+  let intervalTime = 60000;
+  let autoPlay = true;
+  let interval;
+  let dataTree = [];
+
+  const slideElement = document.getElementById('slide');
+  const controls = document.getElementById('controls');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const pauseBtn = document.getElementById('pause');
+  const fullscreenBtn = document.getElementById("fullscreen-btn");
   const filtroAno = document.getElementById('filtro-ano');
   const filtroMes = document.getElementById('filtro-mes');
   const filtroDia = document.getElementById('filtro-dia');
   const btnCarregar = document.getElementById('btn-loadingimg');
 
-  let dataTree = []; // Para armazenar a estrutura de pastas
+  // =======================================================
+  // 2. FUNÇÕES DO SLIDESHOW
+  // =======================================================
 
-  // Função para carregar a árvore de diretórios da API
-  async function carregarFiltros() {
+  function showSlide(index) {
+    if (!images || images.length === 0) {
+      slideElement.style.opacity = 0;
+      return;
+    }
+    slideElement.style.opacity = 0;
+    setTimeout(() => {
+      slideElement.src = images[index];
+      slideElement.onload = () => {
+        slideElement.style.opacity = 1;
+      };
+    }, 500);
+  }
+
+  function nextSlide() {
+    if (images.length === 0) return;
+    currentIndex = (currentIndex + 1) % images.length;
+    showSlide(currentIndex);
+  }
+
+  function prevSlide() {
+    if (images.length === 0) return;
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showSlide(currentIndex);
+  }
+
+  function stopAutoPlay() {
+    clearInterval(interval);
+  }
+
+  function startAutoPlay() {
+    stopAutoPlay();
+    if (autoPlay && images.length > 1) {
+      interval = setInterval(nextSlide, intervalTime);
+    }
+  }
+
+  function iniciarSlideshow(novasImagens) {
+    if (!novasImagens || novasImagens.length === 0) {
+      images = [];
+      showSlide(-1);
+      stopAutoPlay();
+      Swal.fire({
+        position: 'top-center', // Posição do alerta no canto superior direito
+        icon: 'error',
+        title: 'Não foi encontrado nenhuma imagem!',
+        text: `${novasImagens.length} imagens não foram carregadas no slideshow.`,
+        showConfirmButton: false, // Não mostrar o botão "OK"
+        timer: 2000, // O alerta desaparecerá após 2 segundos
+        toast: true, // Usa o modo "toast", que é menor e menos intrusivo
+        background: '#333', // Fundo escuro para combinar com um tema escuro
+        color: '#fff' // Cor do texto
+      });
+      return;
+    }
+    images = novasImagens;
+    currentIndex = 0;
+    showSlide(currentIndex);
+    // instale a biblioteca SweetAlert2 para usar este alerta
+    Swal.fire({
+      position: 'top-center', // Posição do alerta no canto superior direito
+      icon: 'success',
+      title: 'Imagens carregadas!',
+      text: `${novasImagens.length} imagens foram carregadas no slideshow.`,
+      showConfirmButton: false, // Não mostrar o botão "OK"
+      timer: 2000, // O alerta desaparecerá após 2 segundos
+      toast: true, // Usa o modo "toast", que é menor e menos intrusivo
+      background: '#33333370', // Fundo escuro para combinar com um tema escuro
+      color: '#fff' // Cor do texto
+    });
+    startAutoPlay();
+  }
+
+  // =======================================================
+  // 3. LÓGICA DOS FILTROS E CARREGAMENTO
+  // =======================================================
+
+  function encontrarDadosMaisRecentes(tree) {
+    if (!tree || tree.length === 0) return null;
+    const ultimoAnoObj = tree[tree.length - 1];
+    if (!ultimoAnoObj.meses || ultimoAnoObj.meses.length === 0) return null;
+    const ultimoMesObj = ultimoAnoObj.meses[ultimoAnoObj.meses.length - 1];
+    if (!ultimoMesObj.dias || ultimoMesObj.dias.length === 0) return null;
+    const ultimoDiaObj = ultimoMesObj.dias[ultimoMesObj.dias.length - 1];
+    return {
+      ano: ultimoAnoObj.ano,
+      mes: ultimoMesObj.mes,
+      dia: ultimoDiaObj.dia,
+      imagens: ultimoDiaObj.imagens
+    };
+  }
+
+  // Função principal de inicialização que agora também carrega o slideshow
+  async function carregarDados() {
     try {
-      const response = await fetch('/api/tree');
+      const response = await fetch('json/history.json');
+      if (!response.ok) {
+        throw new Error(`Não foi possível carregar history.json. Status: ${response.status}`);
+      }
       dataTree = await response.json();
 
-      // Limpa e popula o seletor de ano
+      // Popula o filtro de Ano
       filtroAno.innerHTML = '<option value="">Selecione...</option>';
       dataTree.forEach(item => {
         const option = document.createElement('option');
@@ -177,12 +135,44 @@ document.addEventListener('DOMContentLoaded', () => {
         option.textContent = item.ano;
         filtroAno.appendChild(option);
       });
+
+      // LÓGICA DE CARREGAMENTO AUTOMÁTICO
+      const dataMaisRecente = encontrarDadosMaisRecentes(dataTree);
+      if (dataMaisRecente) {
+        iniciarSlideshow(dataMaisRecente.imagens);
+        // Pré-seleciona os valores nos filtros
+        filtroAno.value = dataMaisRecente.ano;
+        filtroAno.dispatchEvent(new Event('change'));
+        filtroMes.value = dataMaisRecente.mes;
+        filtroMes.dispatchEvent(new Event('change'));
+        filtroDia.value = dataMaisRecente.dia;
+        filtroDia.dispatchEvent(new Event('change'));
+      }
     } catch (error) {
-      console.error('Falha ao carregar os filtros:', error);
+      console.error("Falha ao carregar dados de filtro:", error);
     }
   }
 
-  // Evento quando um ano é selecionado
+  // Evento de clique do botão para carregamento manual
+  btnCarregar.addEventListener('click', () => {
+    const ano = filtroAno.value;
+    const mes = filtroMes.value;
+    const dia = filtroDia.value;
+    if (!ano || !mes || !dia) return;
+
+    const anoData = dataTree.find(item => item.ano === ano);
+    const mesData = anoData ? anoData.meses.find(item => item.mes === mes) : null;
+    const diaData = mesData ? mesData.dias.find(item => item.dia === dia) : null;
+    const novasImagens = diaData ? diaData.imagens : [];
+
+    iniciarSlideshow(novasImagens);
+
+    if (novasImagens.length === 0) {
+      alert('Nenhuma imagem encontrada para a data selecionada.');
+    }
+  });
+
+  // Lógica de encadeamento dos filtros
   filtroAno.addEventListener('change', () => {
     const anoSelecionado = filtroAno.value;
     filtroMes.innerHTML = '<option value="">Selecione...</option>';
@@ -193,17 +183,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (anoSelecionado) {
       const anoData = dataTree.find(item => item.ano === anoSelecionado);
-      anoData.meses.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.mes;
-        option.textContent = item.mes;
-        filtroMes.appendChild(option);
-      });
-      filtroMes.disabled = false;
+      if (anoData && anoData.meses) {
+        anoData.meses.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.mes;
+          option.textContent = item.mes;
+          filtroMes.appendChild(option);
+        });
+        filtroMes.disabled = false;
+      }
     }
   });
 
-  // Evento quando um mês é selecionado
   filtroMes.addEventListener('change', () => {
     const anoSelecionado = filtroAno.value;
     const mesSelecionado = filtroMes.value;
@@ -213,52 +204,99 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mesSelecionado) {
       const anoData = dataTree.find(item => item.ano === anoSelecionado);
-      const mesData = anoData.meses.find(item => item.mes === mesSelecionado);
-      mesData.dias.forEach(dia => {
-        const option = document.createElement('option');
-        option.value = dia;
-        option.textContent = dia;
-        filtroDia.appendChild(option);
-      });
-      filtroDia.disabled = false;
+      const mesData = anoData ? anoData.meses.find(item => item.mes === mesSelecionado) : null;
+      if (mesData && mesData.dias) {
+        mesData.dias.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.dia;
+          option.textContent = item.dia;
+          filtroDia.appendChild(option);
+        });
+        filtroDia.disabled = false;
+      }
     }
   });
 
-  // Evento quando um dia é selecionado
   filtroDia.addEventListener('change', () => {
     btnCarregar.disabled = !filtroDia.value;
   });
 
-  // Evento do botão para carregar as imagens
-  btnCarregar.addEventListener('click', async () => {
-    const ano = filtroAno.value;
-    const mes = filtroMes.value;
-    const dia = filtroDia.value;
+  // =====================
+  // 4. EVENT LISTENERS 
+  // =====================
 
-    if (!ano || !mes || !dia) return;
-
-    try {
-      const response = await fetch(`/api/images?ano=${ano}&mes=${mes}&dia=${dia}`);
-      const novasImagens = await response.json();
-
-      if (novasImagens.length > 0) {
-        console.log('Novas imagens para o slideshow:', novasImagens);
-        alert(`Carregadas ${novasImagens.length} imagens! Integre esta lista ao seu slideshow.`);
-        
-        // Exemplo de como atualizar a primeira imagem
-        const slideElement = document.getElementById('slide');
-        if(slideElement) {
-          slideElement.src = novasImagens[0];
-        }
-
-      } else {
-        alert('Nenhuma imagem encontrada para a data selecionada.');
-      }
-    } catch (error) {
-      console.error('Falha ao carregar imagens:', error);
+  pauseBtn.addEventListener('click', () => {
+    autoPlay = !autoPlay;
+    if (autoPlay) {
+      pauseBtn.textContent = '⏸';
+      startAutoPlay();
+    } else {
+      pauseBtn.textContent = '▶';
+      stopAutoPlay();
     }
   });
 
-  // Carrega os filtros assim que a página é aberta
-  carregarFiltros();
+  nextBtn.addEventListener('click', () => {
+    nextSlide();
+    if (autoPlay) {
+      stopAutoPlay();
+      startAutoPlay();
+    }
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prevSlide();
+    if (autoPlay) {
+      stopAutoPlay();
+      startAutoPlay();
+    }
+  });
+
+  document.body.addEventListener('mousemove', e => {
+    if (
+      window.innerHeight - e.clientY < 80 &&
+      window.innerWidth - e.clientX < 200
+    ) {
+      controls.classList.remove('hidden');
+    }
+  });
+
+  document.body.addEventListener('touchstart', () => {
+    controls.classList.toggle('hidden');
+  });
+
+  fullscreenBtn.addEventListener("click", function () {
+    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    } else {
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) elem.requestFullscreen();
+      else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+      else if (elem.mozRequestFullScreen) elem.mozRequestFullScreen();
+      else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+      else if (elem.webkitEnterFullscreen) elem.webkitEnterFullscreen();
+    }
+  });
+
+  function toggleButtonIcon() {
+    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+      fullscreenBtn.textContent = "⤢";
+    } else {
+      fullscreenBtn.textContent = "⛶";
+    }
+  }
+
+  document.addEventListener("fullscreenchange", toggleButtonIcon);
+  document.addEventListener("webkitfullscreenchange", toggleButtonIcon);
+  document.addEventListener("mozfullscreenchange", toggleButtonIcon);
+  document.addEventListener("MSFullscreenChange", toggleButtonIcon);
+
+  // =======================================================
+  // 5. INICIALIZAÇÃO
+  // =======================================================
+
+  carregarDados();
 });
