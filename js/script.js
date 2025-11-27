@@ -154,3 +154,111 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const filtroAno = document.getElementById('filtro-ano');
+  const filtroMes = document.getElementById('filtro-mes');
+  const filtroDia = document.getElementById('filtro-dia');
+  const btnCarregar = document.getElementById('btn-loadingimg');
+
+  let dataTree = []; // Para armazenar a estrutura de pastas
+
+  // Função para carregar a árvore de diretórios da API
+  async function carregarFiltros() {
+    try {
+      const response = await fetch('/api/tree');
+      dataTree = await response.json();
+
+      // Limpa e popula o seletor de ano
+      filtroAno.innerHTML = '<option value="">Selecione...</option>';
+      dataTree.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.ano;
+        option.textContent = item.ano;
+        filtroAno.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Falha ao carregar os filtros:', error);
+    }
+  }
+
+  // Evento quando um ano é selecionado
+  filtroAno.addEventListener('change', () => {
+    const anoSelecionado = filtroAno.value;
+    filtroMes.innerHTML = '<option value="">Selecione...</option>';
+    filtroDia.innerHTML = '<option value="">Selecione...</option>';
+    filtroMes.disabled = true;
+    filtroDia.disabled = true;
+    btnCarregar.disabled = true;
+
+    if (anoSelecionado) {
+      const anoData = dataTree.find(item => item.ano === anoSelecionado);
+      anoData.meses.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.mes;
+        option.textContent = item.mes;
+        filtroMes.appendChild(option);
+      });
+      filtroMes.disabled = false;
+    }
+  });
+
+  // Evento quando um mês é selecionado
+  filtroMes.addEventListener('change', () => {
+    const anoSelecionado = filtroAno.value;
+    const mesSelecionado = filtroMes.value;
+    filtroDia.innerHTML = '<option value="">Selecione...</option>';
+    filtroDia.disabled = true;
+    btnCarregar.disabled = true;
+
+    if (mesSelecionado) {
+      const anoData = dataTree.find(item => item.ano === anoSelecionado);
+      const mesData = anoData.meses.find(item => item.mes === mesSelecionado);
+      mesData.dias.forEach(dia => {
+        const option = document.createElement('option');
+        option.value = dia;
+        option.textContent = dia;
+        filtroDia.appendChild(option);
+      });
+      filtroDia.disabled = false;
+    }
+  });
+
+  // Evento quando um dia é selecionado
+  filtroDia.addEventListener('change', () => {
+    btnCarregar.disabled = !filtroDia.value;
+  });
+
+  // Evento do botão para carregar as imagens
+  btnCarregar.addEventListener('click', async () => {
+    const ano = filtroAno.value;
+    const mes = filtroMes.value;
+    const dia = filtroDia.value;
+
+    if (!ano || !mes || !dia) return;
+
+    try {
+      const response = await fetch(`/api/images?ano=${ano}&mes=${mes}&dia=${dia}`);
+      const novasImagens = await response.json();
+
+      if (novasImagens.length > 0) {
+        console.log('Novas imagens para o slideshow:', novasImagens);
+        alert(`Carregadas ${novasImagens.length} imagens! Integre esta lista ao seu slideshow.`);
+        
+        // Exemplo de como atualizar a primeira imagem
+        const slideElement = document.getElementById('slide');
+        if(slideElement) {
+          slideElement.src = novasImagens[0];
+        }
+
+      } else {
+        alert('Nenhuma imagem encontrada para a data selecionada.');
+      }
+    } catch (error) {
+      console.error('Falha ao carregar imagens:', error);
+    }
+  });
+
+  // Carrega os filtros assim que a página é aberta
+  carregarFiltros();
+});

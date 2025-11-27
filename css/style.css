@@ -114,3 +114,31 @@ body {
   color: white;
   font-size: 1.1rem;
 }
+
+.filter-style {
+  position: absolute; 
+  bottom: 8px;         
+  left: 10px;        
+  z-index: 100;      
+  background-color: rgba(0, 0, 0, 0.7); 
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #555;
+}
+
+.filter-style label {
+  color: white;
+  margin-right: 5px;
+}
+
+.filter-style select, .filter-style button {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.filter-style button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
