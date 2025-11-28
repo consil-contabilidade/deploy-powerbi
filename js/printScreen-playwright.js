@@ -29,10 +29,8 @@ async function removeTooltip(page) {
       }
     }
 
-    // 1️⃣ Remove os tooltips existentes imediatamente
     esconderTooltips();
 
-    // 2️⃣ Observa e remove tooltips que surgirem depois
     const observer = new MutationObserver(() => {
       esconderTooltips();
     });
@@ -87,19 +85,15 @@ async function irParaPrimeiraPagina(page) {
 }
 
 export default async function capturarPaginasPowerBI() {
-  // URL do Power BI
   const url =
     'https://app.powerbi.com/view?r=eyJrIjoiZjdkZDRmOTQtNmUwMC00MmM5LWFjZmEtYjFiZjA0MjM0ZjJmIiwidCI6ImVkNjkzYWIxLTFhZGQtNDJhMy04NzY1LWJjMjkzYjU4ZmQyMiJ9';
 
-  // Pasta para salvar os screenshots
   const pastaDestino = './screenshots_powerbi';
 
-  // Criar pasta se não existir
   if (!fs.existsSync(pastaDestino)) {
     fs.mkdirSync(pastaDestino, { recursive: true });
   }
 
-  // Inicializar o browser
   const browser = await chromium.launch({
     headless: true, // Deixe false para ver o processo
     slowMo: 1000, // Adiciona delay entre ações
