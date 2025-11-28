@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fullscreenBtn = document.getElementById('fullscreen-btn');
   const filtroAno = document.getElementById('filtro-ano');
   const filtroMes = document.getElementById('filtro-mes');
-  const filtroDia = document.getElementById('filtro-dia'); // após colocar dentro da label ele quebrou, analisar o motivo
+  const filtroDia = document.getElementById('filtro-dia');
   const btnCarregar = document.getElementById('btn-loadingimg');
 
   function showSlide(index) {
