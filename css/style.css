@@ -114,3 +114,139 @@ body {
   color: white;
   font-size: 1.1rem;
 }
+
+
+#filtro-container {
+  position: absolute;
+  bottom: 8px;
+  left: 20px;
+  z-index: 1;
+  padding: 24px;
+  width: 740px;
+  height: 48px;
+}
+.filter-style {
+  position: absolute; 
+  bottom: 8px;         
+  left: 10px;        
+  z-index: 100;      
+  padding: 15px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #555;
+}
+
+
+.filter-style label {
+  /* Tipografia Moderna */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  
+  /* Cores e Sombras */
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+
+  /* Alinhamento e Espaçamento */
+  margin-right: 8px;
+  margin-left: 5px;
+  
+  display: inline-block;
+  vertical-align: middle; 
+  line-height: 1;
+}
+
+.filter-style label:not(:first-child) {
+    margin-left: 15px;
+    border-left: 1px solid rgba(255,255,255,0.2); /* Uma linha separadora */
+    padding-left: 15px;
+}
+
+
+.filter-style select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Estilização da caixa */
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white; 
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: 8px 30px 8px 15px; /* Espaço extra na direita para a seta */
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  
+  text-align: center;
+  text-align-last: center;
+  -moz-text-align-last: center;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  
+  transition: all 0.3s ease;
+}
+
+.filter-style select:hover,
+.filter-style select:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: white;
+}
+
+.filter-style select option {
+  background-color: #333;
+  color: white;
+  text-align: center;
+}
+
+.filter-style button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.container-hidden:hover .content-hidden {
+  display: block;
+}
+
+.content-hidden {
+  display: none;
+}
+
+.filter-style button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px; 
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  vertical-align: middle;
+}
+
+
+.filter-style button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: white;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); 
+}
+
+
+.filter-style button:active {
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateY(1px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Se quiser adicionar um ícone dentro do botão no futuro, isso ajuda a alinhar */
+.filter-style button svg, 
+.filter-style button i {
+    margin-right: 5px;
+    vertical-align: middle;
+}

@@ -3,6 +3,7 @@ import checkImageSize from './js/checkImageSize.js';
 import delay from './js/delay.js';
 import gitPush from './js/gitPush.js';
 import updateDateJSON from './js/updateDateJSON.js'
+import gerarPastas from './js/organizaShots.js';
 
 async function init() {
   try {
@@ -10,6 +11,8 @@ async function init() {
     await delay(300);
     await checkImageSize();
     await updateDateJSON();
+    await gerarPastas();
+    await delay(500);
     await delay(500);
     await gitPush();
   } catch (error) {

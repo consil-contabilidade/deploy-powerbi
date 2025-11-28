@@ -10,11 +10,9 @@ export default async function updateDateJSON() {
   const isNode = typeof window === 'undefined' && typeof document === 'undefined';
   
   if (isNode) {
-    // Executando no Node.js - Salvar data atual no JSON
     try {
       const agora = new Date();
       
-      // Formatar data para o formato brasileiro
       const dia = agora.getDate().toString().padStart(2, '0');
       const mes = (agora.getMonth() + 1).toString().padStart(2, '0');
       const ano = agora.getFullYear();

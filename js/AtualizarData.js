@@ -1,6 +1,5 @@
 async function atualizarData() {
   try {
-    // Buscar dados do JSON
     const response = await fetch('./json/ultimaAtualizacao.json');
     const horarioData = document.querySelector('.horarioData');
     if (response.ok) {
