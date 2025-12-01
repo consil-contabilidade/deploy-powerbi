@@ -8,19 +8,19 @@
           {
             "dia": "25",
             "imagens": [
-              "pasta_destino/2025/11/25/pagina_01.png",
-              "pasta_destino/2025/11/25/pagina_02.png",
-              "pasta_destino/2025/11/25/pagina_03.png",
-              "pasta_destino/2025/11/25/pagina_04.png"
+              "screenshots_powerbi/2025/11/25/pagina_01.png",
+              "screenshots_powerbi/2025/11/25/pagina_02.png",
+              "screenshots_powerbi/2025/11/25/pagina_03.png",
+              "screenshots_powerbi/2025/11/25/pagina_04.png"
             ]
           },
           {
             "dia": "27",
             "imagens": [
-              "pasta_destino/2025/11/27/pagina_01.png",
-              "pasta_destino/2025/11/27/pagina_02.png",
-              "pasta_destino/2025/11/27/pagina_03.png",
-              "pasta_destino/2025/11/27/pagina_04.png"
+              "screenshots_powerbi/2025/11/27/pagina_01.png",
+              "screenshots_powerbi/2025/11/27/pagina_02.png",
+              "screenshots_powerbi/2025/11/27/pagina_03.png",
+              "screenshots_powerbi/2025/11/27/pagina_04.png"
             ]
           }
         ]
@@ -31,10 +31,10 @@
           {
             "dia": "01",
             "imagens": [
-              "pasta_destino/2025/12/01/pagina_01.png",
-              "pasta_destino/2025/12/01/pagina_02.png",
-              "pasta_destino/2025/12/01/pagina_03.png",
-              "pasta_destino/2025/12/01/pagina_04.png"
+              "screenshots_powerbi/2025/12/01/pagina_01.png",
+              "screenshots_powerbi/2025/12/01/pagina_02.png",
+              "screenshots_powerbi/2025/12/01/pagina_03.png",
+              "screenshots_powerbi/2025/12/01/pagina_04.png"
             ]
           }
         ]
