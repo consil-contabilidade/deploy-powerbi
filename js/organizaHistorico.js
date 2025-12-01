@@ -2,13 +2,13 @@ import fs from 'fs';
 import path from 'path';
 
 const pastaJsonOrigem = path.resolve('./json/images.json');
-const pastaDestinoFinal = path.resolve('./screenshots_powerbi');
+const pastaDestino = path.resolve('./screenshots_powerbi');
 const caminhoJsonSaida = path.resolve('./json/historico.json');
 
 export default async function gerarPastas() {
   try {
-    if (!fs.existsSync(pastaDestinoFinal)) {
-      fs.mkdirSync(pastaDestinoFinal, { recursive: true });
+    if (!fs.existsSync(pastaDestino)) {
+      fs.mkdirSync(pastaDestino, { recursive: true });
     }
 
     const atual = new Date();
@@ -16,7 +16,7 @@ export default async function gerarPastas() {
     const month = String(atual.getMonth() + 1).padStart(2, '0');
     const day = String(atual.getDate()).padStart(2, '0');
 
-    const pastaDoDia = path.join(pastaDestinoFinal, year, month, day);
+    const pastaDoDia = path.join(pastaDestino, year, month, day);
 
     if (!fs.existsSync(pastaDoDia)) {
       fs.mkdirSync(pastaDoDia, { recursive: true });
@@ -47,11 +47,11 @@ export default async function gerarPastas() {
     }
 
     const arvoreDeArquivos = fs
-      .readdirSync(pastaDestinoFinal, { withFileTypes: true })
+      .readdirSync(pastaDestino, { withFileTypes: true })
       .filter(direntAno => direntAno.isDirectory())
       .map(direntAno => {
         const ano = direntAno.name;
-        const caminhoAno = path.join(pastaDestinoFinal, ano);
+        const caminhoAno = path.join(pastaDestino, ano);
 
         const meses = fs
           .readdirSync(caminhoAno, { withFileTypes: true })
@@ -70,7 +70,7 @@ export default async function gerarPastas() {
                 const imagens = fs
                   .readdirSync(caminhoDia)
                   .filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file))
-                  .map(file => `pasta_destino/${ano}/${mes}/${dia}/${file}`);
+                  .map(file => `${pastaDestino}/${ano}/${mes}/${dia}/${file}`);
                 return { dia, imagens };
               });
 

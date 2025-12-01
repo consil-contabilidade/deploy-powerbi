@@ -3,7 +3,7 @@ import checkImageSize from './js/checkImageSize.js';
 import delay from './js/delay.js';
 import gitPush from './js/gitPush.js';
 import updateDateJSON from './js/updateDateJSON.js'
-import gerarPastas from './js/organizaShots.js';
+import gerarPastas from './js/organizaHistorico.js';
 
 async function init() {
   try {
