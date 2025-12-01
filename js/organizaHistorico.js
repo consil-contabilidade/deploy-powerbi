@@ -70,7 +70,7 @@ export default async function gerarPastas() {
                 const imagens = fs
                   .readdirSync(caminhoDia)
                   .filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file))
-                  .map(file => `${pastaDestino}/${ano}/${mes}/${dia}/${file}`);
+                  .map(file => `screenshots_powerbi/${ano}/${mes}/${dia}/${file}`);
                 return { dia, imagens };
               });
 
