@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
   let images = [];
   let currentIndex = 0;
   let intervalTime = 60000;
@@ -66,33 +65,28 @@ document.addEventListener('DOMContentLoaded', () => {
       images = [];
       showSlide(-1);
       stopAutoPlay();
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        title: 'Não foi encontrado nenhuma imagem!',
-        text: `${novasImagens.length} imagens não foram carregadas no slideshow.`,
-        showConfirmButton: false,
-        timer: 2000,
-        toast: true,
-        background: '#333',
-        color: '#fff',
-      });
+      showToast('error', 'Sem imagens', 'Nenhuma mídia encontrada.');
       return;
     }
     images = novasImagens;
     currentIndex = 0;
     showSlide(currentIndex);
-    Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: 'Imagens carregadas!',
-      text: `${novasImagens.length} imagens foram carregadas no slideshow.`,
-      showConfirmButton: false, // Não mostrar o botão "OK"
-      timer: 2000,
-      toast: true,
-      background: '#333',
-      color: '#fff',
-    });
+
+    // O toast só aparece se NÃO for fullscreen,
+    // ou aparece de forma muito sutil (definido no CSS).
+    
+    // Se quiser que NÃO apareça nada na TV quando der certo (Recomendado):
+    if (!document.fullscreenElement) {
+      showToast(
+        'success',
+        'Slides carregados',
+        `${novasImagens.length} imagens.`
+      );
+    }
+
+    // Se quiser que apareça sempre, apenas remova o if acima e chame direto:
+    // showToast('success', 'Pronto!', '');
+
     startAutoPlay();
   }
 
@@ -100,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function hideCursor() {
     document.body.style.cursor = 'none';
   }
-  
+
   function showCursor() {
     document.body.style.cursor = 'default';
     clearTimeout(cursorTimer);
@@ -109,37 +103,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===================== LÓGICA DO REFRESH AUTOMÁTICO =====================
   function startRefreshTimer() {
-  stopRefreshTimer(); 
-  
-  refreshTimer = setTimeout(() => {
-    sessionStorage.setItem('shouldBeFullscreen', 'true');
-    window.location.reload();
-  }, REFRESH_TIME);
+    stopRefreshTimer();
+
+    refreshTimer = setTimeout(() => {
+      sessionStorage.setItem('shouldBeFullscreen', 'true');
+      window.location.reload();
+    }, REFRESH_TIME);
   }
 
   function stopRefreshTimer() {
-  console.log("Timer de refresh pausado");
-  clearTimeout(refreshTimer);
+    console.log('Timer de refresh pausado');
+    clearTimeout(refreshTimer);
   }
 
   // ===================== FULLSCREEN AO ABRIR O SITE =====================
   function tryAutoFullscreen() {
     const elem = document.documentElement;
-    const method = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
-    
+    const method =
+      elem.requestFullscreen ||
+      elem.webkitRequestFullscreen ||
+      elem.mozRequestFullScreen ||
+      elem.msRequestFullscreen;
+
     // Alguns navegadores bloqueiam o fullscreen ao abrir, em atualizações futuras ele pode parar de funcionar
     if (method) {
       method.call(elem).catch(err => {
-        console.log("Auto-fullscreen bloqueado pelo navegador. Aguardando interação.");
+        console.log(
+          'Auto-fullscreen bloqueado pelo navegador. Aguardando interação.'
+        );
       });
     }
   }
-  
+
   window.addEventListener('load', () => {
-    if (sessionStorage.getItem('shouldBeFullscreen') === 'true') { tryAutoFullscreen(); }
+    if (sessionStorage.getItem('shouldBeFullscreen') === 'true') {
+      tryAutoFullscreen();
+    }
     startRefreshTimer();
   });
-
 
   function encontrarDadosMaisRecentes(historico) {
     if (!historico || historico.length === 0) return null;
@@ -187,6 +188,34 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       console.error('Falha ao carregar dados de filtro:', error);
     }
+  }
+
+  // ===================== Função Auxiliar para Mostrar a Notificação =====================
+  function showToast(type, title, message) {
+    const toast = document.getElementById('custom-toast');
+    const iconSpan = toast.querySelector('.icon');
+    const textSpan = toast.querySelector('.text');
+
+    // Limpa classes anteriores
+    toast.className = '';
+
+    if (type === 'success') {
+      toast.classList.add('success');
+      iconSpan.innerHTML = '✔';
+      textSpan.textContent = title;
+    } else {
+      toast.classList.add('error');
+      iconSpan.innerHTML = '✖';
+      textSpan.textContent = `${title}: ${message}`;
+    }
+
+    requestAnimationFrame(() => {
+      toast.classList.add('show');
+    });
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3000);
   }
 
   btnCarregar.addEventListener('click', () => {
@@ -291,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.body.addEventListener('mousemove', e => {
-    showCursor()
+    showCursor();
     if (
       window.innerHeight - e.clientY < 80 &&
       window.innerWidth - e.clientX < 200
