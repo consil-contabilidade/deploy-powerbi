@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let images = [];
   let currentIndex = 0;
   let intervalTime = 60000;
+  const REFRESH_TIME = 15 * 60 * 1000;
+  const IDLE_CURSOR_TIME = 3000;
   let autoPlay = true;
   let interval;
   let dataHistorico = [];
