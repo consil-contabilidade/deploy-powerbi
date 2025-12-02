@@ -3,9 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let images = [];
   let currentIndex = 0;
   let intervalTime = 60000;
+  const REFRESH_TIME = 15 * 60 * 1000;
+  const IDLE_CURSOR_TIME = 3000;
   let autoPlay = true;
   let interval;
   let dataHistorico = [];
+  let refreshTimer;
+  let cursorTimer;
+  let isPaused = false;
 
   const slideElement = document.getElementById('slide');
   const controls = document.getElementById('controls');
@@ -50,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startAutoPlay() {
     stopAutoPlay();
+    hideCursor();
     if (autoPlay && images.length > 1) {
       interval = setInterval(nextSlide, intervalTime);
     }
@@ -89,6 +95,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     startAutoPlay();
   }
+
+  // ===================== LÓGICA DO CURSOR (ESCONDER) =====================
+  function hideCursor() {
+    document.body.style.cursor = 'none';
+  }
+  
+  function showCursor() {
+    document.body.style.cursor = 'default';
+    clearTimeout(cursorTimer);
+    cursorTimer = setTimeout(hideCursor, IDLE_CURSOR_TIME);
+  }
+
+  // ===================== LÓGICA DO REFRESH AUTOMÁTICO =====================
+  function startRefreshTimer() {
+  stopRefreshTimer(); 
+  
+  refreshTimer = setTimeout(() => {
+    sessionStorage.setItem('shouldBeFullscreen', 'true');
+    window.location.reload();
+  }, REFRESH_TIME);
+  }
+
+  function stopRefreshTimer() {
+  console.log("Timer de refresh pausado");
+  clearTimeout(refreshTimer);
+  }
+
+  // ===================== FULLSCREEN AO ABRIR O SITE =====================
+  function tryAutoFullscreen() {
+    const elem = document.documentElement;
+    const method = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
+    
+    // Alguns navegadores bloqueiam o fullscreen ao abrir, em atualizações futuras ele pode parar de funcionar
+    if (method) {
+      method.call(elem).catch(err => {
+        console.log("Auto-fullscreen bloqueado pelo navegador. Aguardando interação.");
+      });
+    }
+  }
+  
+  window.addEventListener('load', () => {
+    if (sessionStorage.getItem('shouldBeFullscreen') === 'true') { tryAutoFullscreen(); }
+    startRefreshTimer();
+  });
+
 
   function encontrarDadosMaisRecentes(historico) {
     if (!historico || historico.length === 0) return null;
@@ -215,9 +266,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (autoPlay) {
       pauseBtn.textContent = '⏸';
       startAutoPlay();
+      startRefreshTimer();
     } else {
       pauseBtn.textContent = '▶';
       stopAutoPlay();
+      stopRefreshTimer();
     }
   });
 
@@ -238,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.body.addEventListener('mousemove', e => {
+    showCursor()
     if (
       window.innerHeight - e.clientY < 80 &&
       window.innerWidth - e.clientX < 200
@@ -261,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
       else if (document.msExitFullscreen) document.msExitFullscreen();
+      sessionStorage.setItem('shouldBeFullscreen', 'false');
     } else {
       const elem = document.documentElement;
       if (elem.requestFullscreen) elem.requestFullscreen();
@@ -268,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (elem.mozRequestFullScreen) elem.mozRequestFullScreen();
       else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
       else if (elem.webkitEnterFullscreen) elem.webkitEnterFullscreen();
+      sessionStorage.setItem('shouldBeFullscreen', 'true');
     }
   });
 
