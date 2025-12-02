@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startAutoPlay() {
     stopAutoPlay();
+    hideCursor();
     if (autoPlay && images.length > 1) {
       interval = setInterval(nextSlide, intervalTime);
     }
