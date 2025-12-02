@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let autoPlay = true;
   let interval;
   let dataHistorico = [];
+  let refreshTimer;
+  let cursorTimer;
+  let isPaused = false;
 
   const slideElement = document.getElementById('slide');
   const controls = document.getElementById('controls');
@@ -90,6 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
       color: '#fff',
     });
     startAutoPlay();
+  }
+
+  // LÓGICA DO CURSOR (ESCONDER) ---
+  function hideCursor() {
+    body.style.cursor = 'none';
+  }
+  
+  function showCursor() {
+    body.style.cursor = 'default';
+    clearTimeout(cursorTimer);
+    cursorTimer = setTimeout(hideCursor, IDLE_CURSOR_TIME);
   }
 
   function encontrarDadosMaisRecentes(historico) {
