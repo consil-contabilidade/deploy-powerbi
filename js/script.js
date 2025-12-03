@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       images = [];
       showSlide(-1);
       stopAutoPlay();
-      showToast('error', 'Sem imagens', 'Nenhuma mídia encontrada.');
+      // showToast('error', 'Sem imagens', 'Nenhuma mídia encontrada.');
       return;
     }
     images = novasImagens;
@@ -77,11 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Se quiser que NÃO apareça nada na TV quando der certo (Recomendado):
     if (!document.fullscreenElement) {
-      showToast(
-        'success',
-        'Slides carregados',
-        `${novasImagens.length} imagens.`
-      );
+      // showToast(
+      //   'success',
+      //   'Slides carregados',
+      //   `${novasImagens.length} imagens.`
+      // );
     }
 
     // Se quiser que apareça sempre, apenas remova o if acima e chame direto:
