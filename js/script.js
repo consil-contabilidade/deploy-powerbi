@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     refreshTimer = setTimeout(() => {
       sessionStorage.setItem('shouldBeFullscreen', 'true');
-      window.location.reload();
+      // window.location.reload();
     }, REFRESH_TIME);
   }
 
