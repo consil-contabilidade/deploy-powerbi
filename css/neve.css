@@ -1,0 +1,26 @@
+/*
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a1a;  Fundo escuro para ver a neve 
+  font-family: sans-serif;
+  overflow: hidden;  Evita barra de rolagem 
+}
+
+img {
+  min-height: 105%;
+  min-width: 100%;
+}
+*/
+
+
+/* O Canvas da Neve */
+#snowCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999; /* Fica por cima de tudo */
+  pointer-events: none; /* O MAIS IMPORTANTE: Permite clicar no site através da neve */
+}

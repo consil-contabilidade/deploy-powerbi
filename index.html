@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slide Gerencial</title>
   <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/neve.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -49,11 +50,13 @@
       <button id="fullscreen-btn" class="hidden" title="Tela cheia">⛶</button>
     </div>
 
-    <div class="controls hidden" id="controls">
-      <button id="prev">&#10094;</button>
-      <button id="pause">⏸</button>
-      <button id="next">&#10095;</button>
-    </div>
+    
+  </div>
+
+  <div class="controls hidden" id="controls">
+    <button id="prev">&#10094;</button>
+    <button id="pause">⏸</button>
+    <button id="next">&#10095;</button>
   </div>
 
   <div id="custom-toast">
@@ -61,8 +64,10 @@
     <span class="text"></span>
   </div>
 
+  <canvas id="snowCanvas"></canvas>
   <script src="./js/AtualizarData.js"></script>
   <script src="./js/script.js"></script>
+  <script src="./js/neve.js"></script>
 </body>
 <!-- <footer class="text-align: center">Desenvolvido por &lt;/Nexo&gt;</footer> -->
 
