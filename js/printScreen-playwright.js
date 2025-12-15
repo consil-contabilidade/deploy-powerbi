@@ -114,11 +114,11 @@ export default async function capturarPaginasPowerBI() {
 
     // Aguardar elementos do Power BI carregarem
     await page.waitForSelector(
-      'i.glyphicon.glyph-small.pbi-glyph-chevronrightmedium.middleIcon.active',
+      'i.glyphicon.glyph-small.pbi-glyph-chevronrightmedium.middleIcon',
       { timeout: 10000 }
     );
     await page.waitForSelector(
-      'i.glyphicon.glyph-small.pbi-glyph-chevronrightmedium.middleIcon.active',
+      'i.glyphicon.glyph-small.pbi-glyph-chevronrightmedium.middleIcon',
       { timeout: 10000 }
     );
 
