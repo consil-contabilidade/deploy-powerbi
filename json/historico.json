@@ -386,6 +386,21 @@
             ]
           }
         ]
+      },
+      {
+        "mes": "02",
+        "dias": [
+          {
+            "dia": "02",
+            "imagens": [
+              "screenshots_powerbi/2026/02/02/pagina_01.png",
+              "screenshots_powerbi/2026/02/02/pagina_02.png",
+              "screenshots_powerbi/2026/02/02/pagina_03.png",
+              "screenshots_powerbi/2026/02/02/pagina_04.png",
+              "screenshots_powerbi/2026/02/02/pagina_05.png"
+            ]
+          }
+        ]
       }
     ]
   }
