@@ -96,7 +96,7 @@ export default async function capturarPaginasPowerBI() {
 
   const browser = await chromium.launch({
     headless: true, // Deixe false para ver o processo
-    slowMo: 1000, // Adiciona delay entre ações
+    slowMo: 2000, // Adiciona delay entre ações
   });
 
   const context = await browser.newContext({
@@ -110,7 +110,7 @@ export default async function capturarPaginasPowerBI() {
     await page.goto(url, { waitUntil: 'networkidle' });
 
     console.log('Aguardando 20 segundos para carregamento completo...');
-    await page.waitForTimeout(20000);
+    await page.waitForTimeout(25000);
 
     // Aguardar elementos do Power BI carregarem
     await page.waitForSelector(
