@@ -109,7 +109,7 @@ export default async function capturarPaginasPowerBI() {
     console.log('Acessando o Power BI...');
     await page.goto(url, { waitUntil: 'networkidle' });
 
-    console.log('Aguardando 20 segundos para carregamento completo...');
+    console.log('Aguardando 25 segundos para carregamento completo...');
     await page.waitForTimeout(25000);
 
     // Aguardar elementos do Power BI carregarem
