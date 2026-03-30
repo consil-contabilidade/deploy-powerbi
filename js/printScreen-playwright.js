@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+﻿import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
@@ -109,8 +109,8 @@ export default async function capturarPaginasPowerBI() {
     console.log('Acessando o Power BI...');
     await page.goto(url, { waitUntil: 'networkidle' });
 
-    console.log('Aguardando 25 segundos para carregamento completo...');
-    await page.waitForTimeout(25000);
+    console.log('Aguardando 35 segundos para carregamento completo...');
+    await page.waitForTimeout(35000);
 
     // Aguardar elementos do Power BI carregarem
     await page.waitForSelector(
