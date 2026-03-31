@@ -96,7 +96,7 @@ export default async function capturarPaginasPowerBI() {
 
   const browser = await chromium.launch({
     headless: true, // Deixe false para ver o processo
-    slowMo: 2000, // Adiciona delay entre ações
+    slowMo: 4000, // Adiciona delay entre ações
   });
 
   const context = await browser.newContext({
