@@ -858,6 +858,21 @@
             ]
           }
         ]
+      },
+      {
+        "mes": "04",
+        "dias": [
+          {
+            "dia": "01",
+            "imagens": [
+              "screenshots_powerbi/2026/04/01/pagina_01.png",
+              "screenshots_powerbi/2026/04/01/pagina_02.png",
+              "screenshots_powerbi/2026/04/01/pagina_03.png",
+              "screenshots_powerbi/2026/04/01/pagina_04.png",
+              "screenshots_powerbi/2026/04/01/pagina_05.png"
+            ]
+          }
+        ]
       }
     ]
   }
