@@ -9,6 +9,10 @@ export default async function checkImageSize() {
   const folder = path.join(__dirname, '../screenshots_powerbi');
   const outputFile = path.join(__dirname, '../json/images.json');
   const minSize = 100 * 1024; // 100 KB
+  const alwaysInclude = new Set([
+    'pagina_06_aniversarioMes.jpeg',
+    'pagina_07_aniversarioEmpresa.jpeg',
+  ]);
 
   try {
     const files = fs
@@ -17,10 +21,9 @@ export default async function checkImageSize() {
         const filePath = path.join(folder, file);
         const stats = fs.statSync(filePath);
         const ext = path.extname(file).toLowerCase();
-        return (
-          stats.size > minSize &&
-          ['.png', '.jpg', '.jpeg', '.gif'].includes(ext)
-        );
+        if (!['.png', '.jpg', '.jpeg', '.gif'].includes(ext)) return false;
+        if (alwaysInclude.has(file)) return true;
+        return stats.size > minSize;
       })
       .map(file => `screenshots_powerbi/${file}`);
 
